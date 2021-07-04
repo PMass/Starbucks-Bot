@@ -18,6 +18,7 @@
 	const channelVerifyTemp = '795464295822917672'
 	const channelVerifyAdmin = '786423882608410664'
 	const channelVerifyLog = '796097870045380668'
+	const channelHub = '362693647138816003'
 
 // create a new Discord client
 const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION'] });
@@ -74,16 +75,15 @@ client.on('messageReactionAdd', (messageReaction, user) => { //when we react
  	let messageid = message.id //ID of message we are reacting to
 	const guild = client.guilds.cache.get(serverID) // get the guild object
   	const channelLog = guild.channels.cache.get(channelVerifyLog)  // Full information for temp channel		
-  	const tag = `<@${user.id}>` // Create a tag for them
  	if (userid != botID && message.channel.id == channelVerifyAdmin) { // If not the bot
 		message.delete({ timeout: 5 }) //Remove the message we reacting to
     	if (emoji.name == '🟢') { //Green Circle
-			sendMessage(channelLog,`${tag} Approved Verification.`, -1) // Send a message in the temp channel
+			sendMessage(channelLog,`${user.tag} Approved Verification.`, -1) // Send a message in the temp channel
 			console.log(user.tag + ' Approved Verifcation!'); //Approved verificion
 			var status = 'approved' //Set status to approved
    		}
     	if (emoji.name == '🔴') { //Red Circle
-    		sendMessage(channelLog,`${tag} Denied Verification.`, -1) // Send a message in the temp channel
+    		sendMessage(channelLog,`${user.tag} Denied Verification.`, -1) // Send a message in the temp channel
 			console.log(user.tag + ' Denied Verifcation!'); //Log status
 			var status = 'denied' //Set status to denied
    		}
@@ -210,11 +210,13 @@ function assignVerified(userid,status){
  	const member = guild.members.cache.get(userid) //Memeber who we are selecting
  	const channelID = channelVerify //Main Verification channel ID
   	const channelFull = guild.channels.cache.get(channelID) //Main Verification channel full information
+	const channelHubFull = guild.channels.cache.get(channelHub) //Main Verification channel full information
   	const tag = `<@${userid}>` //tag variable who we are tagging to let them know the statuts
 	if(status == 'approved'){ //If approved
 		member.roles.add('786675086823260160'); //Give the role
 		//Send message then nuke after 12 Hours
 		sendMessage(channelFull, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, 43200)
+		sendMessage(channelHubFull, `Please welcome ${tag} to the Parter hub`, 3600)
 	} else { //If not approved or anything else
 		//Send message then nuke after 12 Hours
   		sendMessage(channelFull, `${tag} You verification for partner has been denied. Please review our qualifications before you resubmit!`, 43200)
