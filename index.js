@@ -2,6 +2,10 @@
 	const Discord = require('discord.js');
 	const config = require('./config.json');
 	const sendMessage = require('./send-message')
+	const mongo = require('./mongo');
+	const fs = require('fs');
+	const path = require('path');
+	const { promisify } = require('util');
 
 	const { GoogleSpreadsheet } = require('google-spreadsheet');
 	const { promisify } = require('util');
@@ -28,6 +32,29 @@ client.once('ready', () => {
 	client.user.setPresence({ activity: { type: 'LISTENING', name: '1 Million Karens'}, status: 'online' }) //Set the bot to online and status
 	.catch(console.error);	
 	console.log('Ready!');
+	await mongo().then((mongoose) => {
+		try {
+			console.log('Connected to mongo!')
+		} finally {
+			mongoose.connection.close()
+		}
+	})
+		const baseFile = 'command-base.js'
+		const commandBase = require(`./commands/${baseFile}`)
+
+		const readCommands = (dir) => {
+	  		const files = fs.readdirSync(path.join(__dirname, dir))
+	  		for (const file of files) {
+	    		const stat = fs.lstatSync(path.join(__dirname, dir, file))
+	    		if (stat.isDirectory()) {
+	      			readCommands(path.join(dir, file))
+	    		} else if (file !== baseFile) {
+	      			const option = require(path.join(__dirname, dir, file))
+	      			commandBase(client, option)
+	    		}
+	  		}
+		}
+  readCommands('commands')
 });
 
 client.login(config.token);
@@ -36,10 +63,10 @@ client.on('message', message => {
 	if (message.author.id != botID){ // If not the bot
 	var user = message.author // Messages sender
 	var userid = message.author.id // Their ID
-	const guild = client.guilds.cache.get(serverID) // get the guild object
+	const guild = message.guild // get the guild object
   	const channelTempFull = guild.channels.cache.get(channelVerifyTemp)  // Full information for temp channel		
   	const channelLog = guild.channels.cache.get(channelVerifyLog)  // Full information for temp channel		
-	const member = guild.member(user) // Server member info
+	const member = message.member // Server member info
 	const tag = `<@${member.id}>` // Create a tag for them
 		if (message.channel.id == channelVerify && message.content == '$verify') { // If in the proper channel and proper message
 			message.delete({ timeout: 150 }) // Remove message
