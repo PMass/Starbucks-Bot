@@ -21,19 +21,13 @@ const reqNum = {
   required: true,
 }
 
-const userInfoSchema = mongoose.Schema({
+const verifcationSchema = mongoose.Schema({
   guildID: reqString,  
+  message: reqString,
   userID: reqString,
-  roles: reqObject,
-  join: reqDate,
-  time: reqString,
-  messages: reqNum,
-  coins: reqNum,
-  items: reqObject,
-  rank1: reqBoolean,
-  rank2: reqBoolean,
-  rank3: reqBoolean,
-  rank4: reqBoolean,
+  time: reqDate,
+  url: reqString,
+  status: reqString,
 })
 
-module.exports = mongoose.model('users-info', userInfoSchema)
+module.exports = mongoose.model('verifcation', verifcationSchema)
