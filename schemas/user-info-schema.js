@@ -30,10 +30,7 @@ const userInfoSchema = mongoose.Schema({
   messages: reqNum,
   coins: reqNum,
   items: reqObject,
-  rank1: reqBoolean,
-  rank2: reqBoolean,
-  rank3: reqBoolean,
-  rank4: reqBoolean,
+  rank: reqString,
 })
 
 module.exports = mongoose.model('users-info', userInfoSchema)

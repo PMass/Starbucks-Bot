@@ -2,22 +2,25 @@ const Discord = require('discord.js');
 const dbGet = require('./dbGet');
 
 // Send message based on channel and a guild
-  module.exports.sendGuildMessage = async (guild, text, msgType, duration = -1) => {
+  module.exports.guildMessage = async (guild, text, msgType, duration = -1) => {
     try {
-      const channels = await dbGet.guildChannels(guild.id)
+      const channels = await dbGet.channels(guild.id)
       var ch = 0
       switch (msgType) {
+        case "verify":
+          ch = guild.channels.cache.get(channels.verify)
+          break;
+        case "verifyTemp":
+          ch = guild.channels.cache.get(channels.temp)
+          break;
+        case "hub":
+          ch = guild.channels.cache.get(channels.hub)
+          break;
+        case "verifyAdmin":
+          ch = guild.channels.cache.get(channels.admin)
+          break;
         case "log":
           ch = guild.channels.cache.get(channels.log)
-          break;
-        case "clock":
-          ch = guild.channels.cache.get(channels.clock)
-          break;
-        case "error":
-          ch = guild.channels.cache.get(channels.error)
-          break;
-        case "spam":
-          ch = guild.channels.cache.get(channels.spam)
           break;
         default:
           ch = guild.channels.cache.get(msgType)
@@ -25,7 +28,7 @@ const dbGet = require('./dbGet');
       }
       const msg = await ch.send(text)
       if (duration === -1) {
-        return
+        return msg
       }
       setTimeout(() => {
         msg.delete()

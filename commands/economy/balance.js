@@ -9,10 +9,10 @@ module.exports = {
     const target = message.mentions.users.first() || message.author
     const targetId = target.id
 
-    const guildId = message.guild.id
-    const userId = target.id
+    const guildID = message.guild.id
+    const userID = target.id
 
-    const coins = await economy.getCoins(guildId, userId)
+    const coins = await economy.getCoins(guildID, userID)
 
     message.reply(`That user has ${coins} coins!`)
   },

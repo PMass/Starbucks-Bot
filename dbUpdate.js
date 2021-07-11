@@ -28,3 +28,52 @@ const verificationSchema = require('./schemas/verifcation-schema')
       }
     })
   }
+
+// Add an item to the shop
+  module.exports.userTime = async (guildID, userID, time) => {
+    return await mongo().then(async (mongoose) => {
+      try {
+        console.log('Running dbUpdate userTime()')
+        await verificationSchema.findOneAndUpdate(
+          {
+            guildID,
+            userID,
+          },
+          {
+            time,
+          },
+          {
+            upsert: true,
+            new: true,
+          }
+        )
+      } finally {
+        mongoose.connection.close()
+      }
+    })
+  }
+
+// Add an item to the shop
+  module.exports.rank = async (guildID, userID, rank) => {
+    return await mongo().then(async (mongoose) => {
+      try {
+        console.log('Running dbUpdate rank()')
+        await userInfoSchema.findOneAndUpdate(
+          {
+            guildID,
+            userID,
+          },
+          {
+            rank,
+          },
+          {
+            upsert: true,
+            new: true,
+          }
+        )
+      } finally {
+        mongoose.connection.close()
+      }
+    })
+  }
+

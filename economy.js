@@ -5,7 +5,7 @@ const coinsCache = {} // { 'guildID-userID': coins }
 
 module.exports = (client) => {}
 
-module.exports.addCoins = async (guildID, userID, coins) => {
+module.exports.addCoins = async (guildID, userID, coins, messages) => {
   return await mongo().then(async (mongoose) => {
     try {
       const result = await userInfoSchema.findOneAndUpdate(
@@ -18,6 +18,7 @@ module.exports.addCoins = async (guildID, userID, coins) => {
           userID,
           $inc: {
             coins,
+            messages,
           },
         },
         {
@@ -44,17 +45,11 @@ module.exports.getCoins = async (guildID, userID) => {
         guildID,
         userID,
       })
-
       let coins = 0
       if (result) {
         coins = result.coins
       } else {
-        console.log('Inserting a document')
-        await new profileSchema({
-          guildID,
-          userID,
-          coins,
-        }).save()
+        console.log('No user found')
       }
       coinsCache[`${guildID}-${userID}`] = coins
       return coins

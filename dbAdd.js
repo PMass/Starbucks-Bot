@@ -60,20 +60,16 @@ module.exports = (client) => {}
   }
 
 // Add an item to the shop
-  module.exports.user = async (guildID, userInfo, roles) => {
+  module.exports.user = async (guildID, userID, roles) => {
     return await mongo().then(async (mongoose) => {
       try {
         console.log('Running dbAdd user()')
-        const userID = userInfo.ID
-        const join = userInfo.join
-        const time = userInfo.time
+        const join = new Date().getTime()
+        const time = 0
         const messages = 0
         const coins = 0
         const items = {}
-        const rank1 = true
-        const rank2 = false
-        const rank3 = false
-        const rank4 = false
+        const rank = "rank 1"
         await userInfoSchema.findOneAndUpdate(
           {
             guildID,
@@ -88,10 +84,7 @@ module.exports = (client) => {}
             messages,
             coins,
             items,
-            rank1,
-            rank2,
-            rank3,
-            rank4,
+            rank,
           },
           {
             upsert: true,
@@ -126,7 +119,6 @@ module.exports = (client) => {}
             time,
             url,
             status,
-
           },
           {
             upsert: true,
