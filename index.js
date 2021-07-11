@@ -1,39 +1,26 @@
 // require the discord.js module and configuration
 	const Discord = require('discord.js');
-	const config = require('./config.json');
-	const sendMessage = require('./send-message')
-	const mongo = require('./mongo');
+	const mongo = require('./mongo')
+	const { GoogleSpreadsheet } = require('google-spreadsheet');
+
 	const fs = require('fs');
 	const path = require('path');
 	const { promisify } = require('util');
 
-	const { GoogleSpreadsheet } = require('google-spreadsheet');
-	const { promisify } = require('util');
-	const doc = new GoogleSpreadsheet('17UFx1-SPrUD-9F3nHylfrE8RWUNaXQYf66sq4UPviO0');
+	const config = require('./config.json');
 	const creds = require('./client_secret.json');
 
+	const doc = new GoogleSpreadsheet('17UFx1-SPrUD-9F3nHylfrE8RWUNaXQYf66sq4UPviO0');
+
 // Internal Modules
-	const dbGet = require('./dbGet')
 	const dsMsg = require('./dsMsg')
-	const dsFunc = require('./dsFunc')
-	const verification = require('./verification')
-
-// Server info
-	const botID = '794000856516395009'
-	const tempVerifiedRole = '795463783149207572'
-
-// Channels
-	const channelVerify = '795464681912795156'
-	const channelVerifyTemp = '795464295822917672'
-	const channelVerifyAdmin = '786423882608410664'
-	const channelVerifyLog = '796097870045380668'
-	const channelHub = '362693647138816003'
+	const fnOther = require('./functions-other')
 
 // create a new Discord client
 const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION'] });
 
 // when the client is ready, run this code
-client.once('ready', () => {
+client.once('ready', async () => {
 	client.user.setPresence({ activity: { type: 'LISTENING', name: '1 Million Karens'}, status: 'online' }) //Set the bot to online and status
 	.catch(console.error);
 	console.log(client.user.id);	
@@ -66,17 +53,12 @@ client.login(config.token);
 
 client.on('message', message => {
 	if (message.author.id != botID){ // If not the bot
-		const guild = message.guild // get the guild object
-		const channels = await dbGet.channels(guild.id)
-		if (message.channel.id == channels.temp) { //If in the temp channel and not the bot
+		if (message.channel.name == "temp-verification") { //If in the temp channel and not the bot
 			message.delete({ timeout: 100 }) //Remove the message
-			const roles = await dbGet.roles(guild.id)
-			const userID = message.author.id // Their ID			
-			verification.save(userID, message.content, guild) // Go save this information to google
-			dsFunc.takeRole(guild, userID, roles.temp)
-			dsMsg.guildMessage(guild, `<@${userID}> lost verified role after sending message.`, "log")
+			fnOther.verify(message)
 		}
-		if (message.channel.id == channels.verify && message.content != '$verify' ) { // If in the proper channel  but not the proper message remove it and log it
+		if (message.channel.name == "verification" && message.content != '$verify' ) { // If in the proper channel  but not the proper message remove it and log it
+			const guild = message.guild // get the guild object
 			message.delete({ timeout: 100 })
 			dsMsg.guildMessage(guild, `<@${message.author.id}> sent random message in Verify channel. It was ${message.content}`, "log")
 		}
@@ -86,7 +68,7 @@ client.on('message', message => {
 client.on('messageReactionAdd', (messageReaction, user) => { //when we react
    let message = messageReaction.message, emoji = messageReaction.emoji; //Log this shit
 	const guild = message.guild // get the guild object	
- 	if (user.id != botID && message.channel.id == channelVerifyAdmin) { // If not the bot
+ 	if (user.id != botID && message.channel.name == "partner-verification") { // If not the bot
 		message.delete({ timeout: 5 }) //Remove the message we reacting to
     	if (emoji.name == '🟢') { //Green Circle
 			dsMsg.guildMessage(guild, `${user.tag} Approved Verification.`, "log")

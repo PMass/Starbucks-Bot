@@ -9,8 +9,8 @@ const dbGet = require('./dbGet')
       const allRoles = member.roles.cache
       const roles = []
       allRoles.forEach(allRoles => roles.push(allRoles.id)); 
-      const roles = await dbGet.guildRoles(guild.id)
-      const rolesValues = Object.values(roles) // Pull the ID and name of each Group Role/certs/ranks
+      const rolesAll = await dbGet.guildRoles(guild.id)
+      const rolesValues = Object.values(rolesGroups) // Pull the ID and name of each Group Role/certs/ranks
       var roleName = [] // Create a blank array for the groups/certs/rank of the user
       for (let i = 0; i < roles.length; i++) { //Go through each role and see if the ID matches any of the IDs of other arrays
         roleName.push(checkVariables(rolesValues, roles, i))

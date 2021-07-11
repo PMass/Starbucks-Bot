@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "discord.js": "^12.5.3",
+    "google-spreadsheet": "^3.1.15",
+    "mongoose": "^5.13.2"
+  }
+}
