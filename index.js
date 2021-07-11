@@ -15,9 +15,13 @@
 // Internal Modules
 	const dsMsg = require('./dsMsg')
 	const fnOther = require('./functions-other')
+	const verification = require('./verification');
+	const messageCount = require('./message-counter')
+	var botID = ""
 
 // create a new Discord client
-const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION'] });
+	const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION'] });
+
 
 // when the client is ready, run this code
 client.once('ready', async () => {
@@ -46,21 +50,23 @@ client.once('ready', async () => {
 	    		}
 	  		}
 		}
-  readCommands('commands')
+	messageCount(client)
+	readCommands('commands')
+	botID = client.user.id
 });
 
 client.login(config.token);
 
 client.on('message', message => {
 	if (message.author.id != botID){ // If not the bot
-		if (message.channel.name == "temp-verification") { //If in the temp channel and not the bot
+		if (message.channel.name == "fake-temp-verification") { //If in the temp channel and not the bot
 			message.delete({ timeout: 100 }) //Remove the message
 			fnOther.verify(message)
 		}
-		if (message.channel.name == "verification" && message.content != '$verify' ) { // If in the proper channel  but not the proper message remove it and log it
+		if (message.channel.name == "fake-verification" && message.content != '-verify' ) { // If in the proper channel  but not the proper message remove it and log it
 			const guild = message.guild // get the guild object
 			message.delete({ timeout: 100 })
-			dsMsg.guildMessage(guild, `<@${message.author.id}> sent random message in Verify channel. It was ${message.content}`, "log")
+			dsMsg.guildMessage(guild, `<@${message.author.id}> sent random message in Verify channel. It was " ${message.content} " `, "log")
 		}
 	}
 });
@@ -68,7 +74,7 @@ client.on('message', message => {
 client.on('messageReactionAdd', (messageReaction, user) => { //when we react
    let message = messageReaction.message, emoji = messageReaction.emoji; //Log this shit
 	const guild = message.guild // get the guild object	
- 	if (user.id != botID && message.channel.name == "partner-verification") { // If not the bot
+ 	if (user.id != botID && message.channel.name == "fake-partner-verification") { // If not the bot
 		message.delete({ timeout: 5 }) //Remove the message we reacting to
     	if (emoji.name == '🟢') { //Green Circle
 			dsMsg.guildMessage(guild, `${user.tag} Approved Verification.`, "log")
@@ -81,7 +87,9 @@ client.on('messageReactionAdd', (messageReaction, user) => { //when we react
 			var status = 'Denied' //Set status to denied
    		}
    		console.log(status) // Log if approved or denied
-   		verification.readAndUpdate(message.id, status, guild) //Run function to log this on google sheets
+   		const mention = message.mentions.members.first()
+
+   		verification.readAndUpdate(message.id, status, guild, mention) //Run function to log this on google sheets
    	}
 });
 

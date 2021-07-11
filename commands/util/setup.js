@@ -4,20 +4,15 @@ const dsMsg = require('../../dsMsg')
 
 module.exports = {
   commands: ['setup'],
-  minArgs: 7,
-  maxArgs: 7,
-  expectedArgs: "<The bot's @> <The verification channel> <The temporary verification channel> <The partner hub channel> <The admin approval channel> <The log channel> <The spam channel>",
+  minArgs: 6,
+  maxArgs: 6,
+  expectedArgs: " <The verification channel> <The temporary verification channel> <The partner hub channel> <The admin approval channel> <The log channel> <The spam channel>",
   permissionError: 'You must be an admin to run this',
   permissions: 'ADMINISTRATOR',
   callback: async (message, arguments) => {
     try {
       message.delete({ timeout: 10000 })
       const guild = message.guild
-      const botID = message.mentions.users.first().id
-      if (!botID) {
-        message.reply('Please tag the bot.')
-        return
-      }
       const roles = await dsGet.rolesGroup(guild)
       const channels = await {};
       channels.verify = message.mentions.channels.array()[0].id

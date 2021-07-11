@@ -1,7 +1,8 @@
 const mongo = require('./mongo')
 const economy = require('./economy')
-const messageCountSchema = require('./schemas/message-count-schema')
 const rank = require('./rank')
+const dbGet = require('./dbGet')
+const dsGet = require('./dsGet');
 
 module.exports = (client) => {
   client.on('message', async (message) => {
@@ -16,11 +17,11 @@ module.exports = (client) => {
       const existingUser = await dbGet.userSearch(guildID, userID)
       if(existingUser){
       } else {
-        const userRoles = await dsGet.getRoles(guildID, userID)
+        const userRoles = await dsGet.getRoles(guildID, message.member)
         await dbAdd.user(guildID, userID, userRoles)
       }
       const newCoins = await economy.addCoins(guildID, userID, coins, messages)
-      await rank.check(guildID, userID)
+      await rank.check(guild, userID)
     }
   })
 }

@@ -33,4 +33,4 @@ const userInfoSchema = mongoose.Schema({
   rank: reqString,
 })
 
-module.exports = mongoose.model('users-info', userInfoSchema)
+module.exports = mongoose.model('user-info', userInfoSchema)

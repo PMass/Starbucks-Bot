@@ -6,14 +6,15 @@ const verificationSchema = require('./schemas/verifcation-schema')
 
 const channelsCache = {} // { 'guildID': channels }
 const rolesCache = {} // { 'guildID': roles }
-const rankCache = {} // { 'guildID-userID': coins }
+const rankCache = {} // { 'guildID-userID': rank }
+const joinCache = {} // { 'guildID-userID': joindate }
 
 // Find all users who are of a current status on the On Duty Database
   module.exports.verification = async (guildID, message) => {
     return await mongo().then(async (mongoose) => {
       try {
         console.log('Running dbGet verification()')
-        const result = await verificationSchema.find(
+        const result = await verificationSchema.findOne(
           {
             guildID,
             message,
@@ -59,7 +60,7 @@ const rankCache = {} // { 'guildID-userID': coins }
     }
     return await mongo().then(async (mongoose) => {
       try {
-        console.log('Running  dbGet channels()')
+        console.log('Running dbGet channels()')
         const result = await guildInfoSchema.findOne({
           guildID,     
         })
@@ -79,9 +80,13 @@ const rankCache = {} // { 'guildID-userID': coins }
 
 // Find the guild channels for the clock, error, log and spam from the Guild database
   module.exports.userTime = async (guildID, userID) => {
+    const cachedValue = joinCache[`${guildID}-${userID}`]
+    if (cachedValue) {
+      return cachedValue
+    }
     return await mongo().then(async (mongoose) => {
       try {
-        console.log('Running user()')
+        console.log('Running dbGet userTime()')
         const result = await userInfoSchema.findOne({
           guildID,
           userID,
@@ -91,6 +96,7 @@ const rankCache = {} // { 'guildID-userID': coins }
         } else {
           console.log('No user Found');
         }
+        joinCache[`${guildID}-${userID}`] = time
         return time;
       } finally {
         mongoose.connection.close()
@@ -106,7 +112,7 @@ const rankCache = {} // { 'guildID-userID': coins }
     }
     return await mongo().then(async (mongoose) => {
       try {
-        console.log('Running user()')
+        console.log('Running dbGet rank()')
         const result = await userInfoSchema.findOne({
           guildID,
           userID,
@@ -128,7 +134,7 @@ const rankCache = {} // { 'guildID-userID': coins }
   module.exports.messages = async (guildID, userID) => {
     return await mongo().then(async (mongoose) => {
       try {
-        console.log('Running user()')
+        console.log('Running dbGet messages()')
         const result = await userInfoSchema.findOne({
           guildID,
           userID,
@@ -149,7 +155,7 @@ const rankCache = {} // { 'guildID-userID': coins }
   module.exports.guildRoles = async (guildID) => {
     return await mongo().then(async (mongoose) => {
       try {
-        console.log('Running guildRoles()')
+        console.log('Running dbGet guildRoles()')
         const result = await guildInfoSchema.findOne({
           guildID,
         })
@@ -175,10 +181,10 @@ const rankCache = {} // { 'guildID-userID': coins }
           guildID,
           userID,
         })
+        let found = true
         if (result) {
-          let found = true
         } else {
-          let found = false
+          found = false
         }
         return found;
       } finally {

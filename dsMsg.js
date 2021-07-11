@@ -16,7 +16,7 @@ const dbGet = require('./dbGet');
         case "hub":
           ch = guild.channels.cache.get(channels.hub)
           break;
-        case "verifyAdmin":
+        case "admin":
           ch = guild.channels.cache.get(channels.admin)
           break;
         case "log":

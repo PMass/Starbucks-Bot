@@ -1,16 +1,24 @@
+const dbAdd = require('./dbAdd');
+const dbGet = require('./dbGet');
+const dbUpdate = require('./dbUpdate');
+const dsFunc = require('./dsFunc');
+const dsMsg = require('./dsMsg');
+const dsGet = require('./dsGet');
+
 //Function for saving the information
   	module.exports.save = async (userID, verificationURL, guild) => {
+  		console.log("running verification save()")
 		const verify = {}
 		try {
 			verify.user = userID
 			verify.content = verificationURL
 			verify.time = formatted_date(); //Create a date for when this was made
 			const tag = `<@${userID}>` //Tag of who submitted it
-			let sent = dsMsg.guildMessage(guild, `${tag} submitted a new verifcation for approval ${verificationURL}`, "admin")
+			let sent = await dsMsg.guildMessage(guild, `${tag} submitted a new verifcation for approval ${verificationURL}`, "admin")
 			verify.ID = sent.id; //Getting message ID
 			await sent.react('🟢'); //Green
 			await sent.react('🔴'); //Red
-			await dbAdd.verification(guildID, verification)
+			await dbAdd.verification(guild.id, verify)
 			console.log('Verifcation Logged') //Log it
 			dsMsg.guildMessage(guild, `Logged Verification for ${tag} `, "log")
 		} catch (error) {
@@ -21,23 +29,24 @@
   	}
 
 
-
 // Send message based on channel and a guild
-  	module.exports.readAndUpdate = async (messageID, status, guild) => {
+  	module.exports.readAndUpdate = async (messageID, status, guild, member) => {
+  		console.log("running verification readAndUpdate()")	
 		try {
 			const guildID = guild.id
 			const verify = await dbGet.verification(guildID, messageID)
-		   const tag = `<@${verify.user}>` // Create a tag for them
+			console.log(verify.userID)
+		   const tag = `<@${verify.userID}>` // Create a tag for them
 			var time = formatted_date() //Date veriable 
 			await dbUpdate.verification(guildID, messageID, status, time)
 			if(status == 'Approved'){ //If approved
 				const roles = await dbGet.roles(guildID)
-				dsFunc.giveRole(guild, verify.user, roles.verified)
-				dsFunc.giveRole(guild, verify.user, roles.rank1)
+				dsFunc.giveRole(guild, verify.userID, roles.verified.id)
+				dsFunc.giveRole(guild, verify.userID, roles.rank1.id)
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, "verify", 43200)
 				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Parter hub`, "hub", 3600)
-	   		const userRoles = await dsGet.getRoles(guildID, mention)
-				dbAdd.user(guildID, verify.user, userRoles)
+	   		const userRoles = await dsGet.roles(guild, member)
+				dbAdd.user(guildID, verify.userID, userRoles)
 			} else { //If not approved or anything else
 				//Send message then nuke after 12 Hours
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been denied. Please review our qualifications before you resubmit!`, "verify", 43200)
