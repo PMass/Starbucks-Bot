@@ -4,6 +4,7 @@ const rank = require('./rank');
 const dbGet = require('./dbGet');
 const dbAdd = require('./dbAdd');
 const dsGet = require('./dsGet');
+const dsFunc = require('./dsFunc');
 
 module.exports = (client) => {
   client.on('message', async (message) => {
