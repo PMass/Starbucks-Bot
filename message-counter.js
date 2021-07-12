@@ -1,7 +1,8 @@
-const mongo = require('./mongo')
-const economy = require('./economy')
-const rank = require('./rank')
-const dbGet = require('./dbGet')
+const mongo = require('./mongo');
+const economy = require('./economy');
+const rank = require('./rank');
+const dbGet = require('./dbGet');
+const dbAdd = require('./dbAdd');
 const dsGet = require('./dsGet');
 
 module.exports = (client) => {
@@ -17,7 +18,7 @@ module.exports = (client) => {
       const existingUser = await dbGet.userSearch(guildID, userID)
       if(existingUser){
       } else {
-        const userRoles = await dsGet.getRoles(guildID, message.member)
+        const userRoles = await dsGet.roles(guild, message.member)
         await dbAdd.user(guildID, userID, userRoles)
       }
       const newCoins = await economy.addCoins(guildID, userID, coins, messages)

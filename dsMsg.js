@@ -69,15 +69,13 @@ const dbGet = require('./dbGet');
       var field = []
       for (let i = 0; i < length; i++) { //Go through each role and see if the ID matches any of the IDs of other arrays
         var item = {}
+        let stock = items[i].stock
         item.name = items[i].name
         let cost = items[i].cost
-        let stock = items[i].stock
         item.value = `Cost: ${cost}\nStock: ${stock}`
         item.inline = true
         field[i] = item
       }
-      console.log(guild.iconURL)
-      console.log(field)
       const embed = {
           "title": `Starbucks Discord Store`,
           "color": 1793568,
