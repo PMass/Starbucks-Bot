@@ -18,6 +18,8 @@ module.exports = (client) => {
       const existingUser = await dbGet.userSearch(guildID, userID)
       if(existingUser){
       } else {
+        const roles = await dbGet.roles(guildID)
+        dsFunc.giveRole(guild, verify.userID, roles.rank1.id)
         const userRoles = await dsGet.roles(guild, message.member)
         await dbAdd.user(guildID, userID, userRoles)
       }

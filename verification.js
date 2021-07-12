@@ -44,7 +44,7 @@ const dsGet = require('./dsGet');
 				dsFunc.giveRole(guild, verify.userID, roles.verified.id)
 				dsFunc.giveRole(guild, verify.userID, roles.rank1.id)
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, "verify", 43200)
-				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Parter hub`, "hub", 3600)
+				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Partner hub`, "hub", 3600)
 	   		const userRoles = await dsGet.roles(guild, member)
 				dbAdd.user(guildID, verify.userID, userRoles)
 			} else { //If not approved or anything else
