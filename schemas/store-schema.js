@@ -25,6 +25,7 @@ const storeSchema = mongoose.Schema({
   guildID: reqString,
   name: reqString,
   cost: reqNum,
+  stock: reqNum,
   other: reqObject,
 })
 

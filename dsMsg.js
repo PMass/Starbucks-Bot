@@ -37,3 +37,61 @@ const dbGet = require('./dbGet');
       console.error(err)
     }
   }
+
+// Send a discord message and log a response
+  module.exports.response = async (message, text) => {
+    try {
+      const filter = m => m.author.id === message.author.id
+      const q = await message.channel.send(text)        
+      const newMsg = await message.channel.awaitMessages(filter, {
+        max: 1,
+        time: 60000,
+        errors: ['time']
+      })
+      const responseMsg = await newMsg.first()
+      q.delete({ timeout: 200 })
+      const content = responseMsg.content
+      responseMsg.delete({ timeout: 200 })
+      return content
+    } catch(err){
+      message.channel.send('Timed out');
+      console.error(err)
+    }
+  }
+
+
+// Send a profile message for the user mentioned
+  module.exports.store = async (channel,items,guild) => {
+    console.log('Running profileMessage()')
+    try {
+      const length = items.length
+      const date = new Date()
+      var field = []
+      for (let i = 0; i < length; i++) { //Go through each role and see if the ID matches any of the IDs of other arrays
+        var item = {}
+        item.name = items[i].name
+        let cost = items[i].cost
+        let stock = items[i].stock
+        item.value = `Cost: ${cost}\nStock: ${stock}`
+        item.inline = true
+        field[i] = item
+      }
+      console.log(guild.iconURL)
+      console.log(field)
+      const embed = {
+          "title": `Starbucks Discord Store`,
+          "color": 1793568,
+          "timestamp": `${date}`,
+          "thumbnail": {
+            "url": `${guild.iconURL()}`
+          },
+          "fields": field
+        }
+      await channel.send({ embed });
+      return
+    } catch(err){
+      console.error(err)
+    }
+  }
+
+

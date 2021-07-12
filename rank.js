@@ -13,12 +13,12 @@ const dbUpdate = require('./dbUpdate');
       const total = now - join
       const roles = await dbGet.roles(guildID)
       const rank = await dbGet.rank(guildID, userID)
-      if(total >= 14515200000 && messages >= 336){
-      } else if(total <= 4838400000 && messages >= 224 && rank != "rank 4") {
+      if(total >= 14545200000 && messages >= 340){
+      } else if(total >= 14515200000 && messages >= 336 && rank != "rank 4") {
         dsFunc.giveRole(guild, userID, roles.rank4.id)
         dsFunc.takeRole(guild, userID, roles.rank3.id)
         dbUpdate.rank(guildID, userID, "rank 4")
-      } else if(total <= 2419200000 && messages >= 112 && rank != "rank 3") {
+      } else if(total >= 4838400000 && messages >= 112 && rank != "rank 3") {
         dsFunc.giveRole(guild, userID, roles.rank3.id)
         dsFunc.takeRole(guild, userID, roles.rank2.id)
         dbUpdate.rank(guildID, userID, "rank 3")

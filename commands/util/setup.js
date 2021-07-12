@@ -11,7 +11,7 @@ module.exports = {
   permissions: 'ADMINISTRATOR',
   callback: async (message, arguments) => {
     try {
-      message.delete({ timeout: 10000 })
+      message.delete({ timeout: 1000 })
       const guild = message.guild
       const roles = await dsGet.rolesGroup(guild)
       const channels = await {};
