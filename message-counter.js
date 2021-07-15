@@ -10,8 +10,7 @@ module.exports = (client) => {
   client.on('message', async (message) => {
     const guild = message.guild // get the guild object
     const guildID = guild.id
-    const channels = await dbGet.channels(guildID)
-    if (message.channel.id == channels.hub) { //If in the temp channel and not the bot
+    if (message.channel.id == 362693647138816003) { //If in the temp channel and not the bot
       const { author } = message
       const userID = author.id
       const coins = 1
