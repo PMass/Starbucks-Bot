@@ -21,8 +21,8 @@ module.exports = (client) => {
       } else {
         const roles = await dbGet.roles(guildID)
         dsFunc.giveRole(guild, userID, roles.rank1.id)
-        const userRoles = await dsGet.roles(guild, message.member)
-        await dbAdd.user(guildID, userID, userRoles)
+        // const userRoles = await dsGet.roles(guild, message.member)
+        // await dbAdd.user(guildID, userID, userRoles)
       }
       const newCoins = await economy.addCoins(guildID, userID, coins, messages)
       await rank.check(guild, userID)

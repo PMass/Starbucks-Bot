@@ -8,6 +8,7 @@ const channelsCache = {} // { 'guildID': channels }
 const rolesCache = {} // { 'guildID': roles }
 const rankCache = {} // { 'guildID-userID': rank }
 const joinCache = {} // { 'guildID-userID': joindate }
+const userCache = {} // { 'guildID-userID': joindate }
 
 // Find all users who are of a current status on the On Duty Database
   module.exports.verification = async (guildID, message) => {
@@ -175,6 +176,10 @@ const joinCache = {} // { 'guildID-userID': joindate }
 // Find the guild channels for the clock, error, log and spam from the Guild database
   module.exports.userSearch = async (guildID, userID) => {
     return await mongo().then(async (mongoose) => {
+    const cachedValue = userCache[`${guildID}-${userID}`]
+    if (cachedValue) {
+      return cachedValue
+    }
       try {
         console.log('Running dbGet userSearch()')
         const result = await userInfoSchema.findOne({
@@ -186,6 +191,7 @@ const joinCache = {} // { 'guildID-userID': joindate }
         } else {
           found = false
         }
+        userCache[`${guildID}-${userID}`] = found
         return found;
       } finally {
         mongoose.connection.close()
