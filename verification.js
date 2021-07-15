@@ -24,7 +24,7 @@ const dsGet = require('./dsGet');
 		} catch (error) {
 			console.log(error);
 			console.log("ERROR! Unable to Save Intake"); //Log it if their was error
-			dsMsg.guildMessage(guild, `Unable to Save Intake for ${tag}`, "log")
+			dsMsg.guildMessage(guild, `Unable to Save Intake for <@${userID}>`, "log")
 		}
   	}
 
@@ -55,7 +55,7 @@ const dsGet = require('./dsGet');
 			} catch (error) { // Error Catching
 				console.log(error)
 		    	console.log("ERROR! Unable to Read Information from Cells")
-		    	dsMsg.guildMessage(guild, `Error Reading Cells Other Reason`, "log")
+		    	dsMsg.guildMessage(guild, `Error Reading Cells Other Reason.`, "log")
 			}
 		}
 
