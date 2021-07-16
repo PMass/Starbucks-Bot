@@ -89,8 +89,7 @@ const dbGet = require('./dbGet')
       console.error(err)
     }
   }
-
-  
+ 
 //Internaul function to check variables role IDs aginst a role id array and see matching ones and return the name of the at one
   function checkVariables(values, roles, i){ // Take in a role ID and see if it matches any of the IDs in the provided array of values, if it does, return the name, otherwise return undefined
     const result = values.find( ({ id }) => id === roles[i] );
