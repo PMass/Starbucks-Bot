@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 const dbGet = require('./dbGet');
+const dsGet = require('./dsGet');
 const dsFunc = require('./dsFunc');
 const dbUpdate = require('./dbUpdate');
 
