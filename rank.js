@@ -15,13 +15,13 @@ const dbUpdate = require('./dbUpdate');
       const roles = await dbGet.roles(guildID)
       const userRoles = await dsGet.roles(guild, message.member)
       if(total >= 14545200000 && messages >= 340){
-      } else if(total >= 14515200000 && messages >= 336 && !(userRoles.includes("rank 4") == true)) {
+      } else if(total >= 14515200000 && messages >= 336 && !(userRoles.includes("4") == true)) {
         dsFunc.giveRole(guild, userID, roles.rank4.id)
         dsFunc.takeRole(guild, userID, roles.rank3.id)
-      } else if(total >= 4838400000 && messages >= 112 && !(userRoles.includes("rank 3") == true)) {
+      } else if(total >= 4838400000 && messages >= 112 && !(userRoles.includes("3") == true)) {
         dsFunc.giveRole(guild, userID, roles.rank3.id)
         dsFunc.takeRole(guild, userID, roles.rank2.id)
-      } else if(total >= 1209600000 && messages >= 56 && !(userRoles.includes("rank 2") == true)) {
+      } else if(total >= 1209600000 && messages >= 56 && !(userRoles.includes("2") == true)) {
         dsFunc.giveRole(guild, userID, roles.rank2.id)
         dsFunc.takeRole(guild, userID, roles.rank1.id)
       } else {
