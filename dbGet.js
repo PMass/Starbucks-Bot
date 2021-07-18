@@ -43,7 +43,7 @@ const userCache = {} // { 'guildID-userID': joindate }
         if (result) {
           roles = result.roles
         } else {
-          console.log('No User Found')
+          console.log('No Roles Found')
         }
         rolesCache[`${guildID}`] = roles
         return roles;
@@ -152,27 +152,6 @@ const userCache = {} // { 'guildID-userID': joindate }
     })
   }
 
-// Find a the guilds discord roles for clocked on and in queue from the Guild database
-  module.exports.guildRoles = async (guildID) => {
-    return await mongo().then(async (mongoose) => {
-      try {
-        console.log('Running dbGet guildRoles()')
-        const result = await guildInfoSchema.findOne({
-          guildID,
-        })
-        let roles = {};
-        if (result) {
-          roles = result.roles
-        } else {
-          console.log('No roles Found')
-        }
-        return roles;
-      } finally {
-        mongoose.connection.close()
-      }
-    })
-  }
-
 // Find the guild channels for the clock, error, log and spam from the Guild database
   module.exports.userSearch = async (guildID, userID) => {
     return await mongo().then(async (mongoose) => {
@@ -199,4 +178,32 @@ const userCache = {} // { 'guildID-userID': joindate }
     })
   }
 
+// Find the guild channels for the clock, error, log and spam from the Guild database
+  module.exports.timeAndMessages = async (guildID, userID) => {
+    const cachedValue = joinCache[`${guildID}-${userID}`]
+    if (cachedValue) {
+      return cachedValue
+    }
+    return await mongo().then(async (mongoose) => {
+      try {
+        console.log('Running dbGet userTime()')
+        const result = await userInfoSchema.findOne({
+          guildID,
+          userID,
+        })
+        let time = 0
+        let messages = 0
+        if (result) {
+          time = result.join;
+          messages = result.messages;;
+        } else {
+          console.log('No user Found');
+        }
+        joinCache[`${guildID}-${userID}`] = time
+        return [time, messages];
+      } finally {
+        mongoose.connection.close()
+      }
+    })
+  }
 
