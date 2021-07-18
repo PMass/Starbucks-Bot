@@ -8,7 +8,7 @@ const dbUpdate = require('./dbUpdate');
   module.exports.check = async (guild, userID, message) => {
     try {
       const guildID = guild.id
-      const [join, messages] = await dbGet.timeAndMessages(guildID, userID)
+      var [join, messages] = await dbGet.timeAndMessages(guildID, userID);
       const now = new Date().getTime()
       const total = now - join
       const roles = await dbGet.roles(guildID)

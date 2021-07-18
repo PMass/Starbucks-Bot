@@ -186,7 +186,7 @@ const userCache = {} // { 'guildID-userID': joindate }
     }
     return await mongo().then(async (mongoose) => {
       try {
-        console.log('Running dbGet userTime()')
+        console.log('Running dbGet timeAndMessages()')
         const result = await userInfoSchema.findOne({
           guildID,
           userID,
