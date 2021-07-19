@@ -24,10 +24,10 @@
 
 
 // when the client is ready, run this code
-client.once('ready', async () => {
+client.on('ready', async () => {
 	client.user.setPresence({ activity: { type: 'LISTENING', name: '1 Million Karens'}, status: 'online' }) //Set the bot to online and status
 	.catch(console.error);
-	console.log(client.user.id);	
+	console.log(client.user.id);
 	console.log('Ready!');
 	await mongo().then((mongoose) => {
 		try {
@@ -68,6 +68,8 @@ client.on('message', message => {
 			message.delete({ timeout: 100 })
 			dsMsg.guildMessage(guild, `<@${message.author.id}> sent random message in Verify channel. It was " ${message.content} " `, "log")
 		}
+		if (message.content.toUpperCase() == '$RESET' && message.channel.name == "boot-spam")
+         resetBot(message.channel);
 	}
 });
 
@@ -93,4 +95,20 @@ client.on('messageReactionAdd', (messageReaction, user) => { //when we react
    	}
 });
 
+// set message listener 
+client.on('message', message => {
+    switch(message.content.toUpperCase()) {
+        case '?RESET':
 
+
+        // ... other commands
+    }
+});
+
+// Turn bot off (destroy), then turn it back on
+function resetBot(channel) {
+    // send channel a message that you're resetting bot [optional]
+    channel.send('Resetting...')
+    .then(msg => client.destroy())
+    .then(() => client.login(config.token));
+}

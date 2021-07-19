@@ -3,6 +3,7 @@ const userInfoSchema = require('./schemas/user-info-schema')
 const guildInfoSchema = require('./schemas/guild-info-schema')
 const storeSchema = require('./schemas/store-schema')
 const verificationSchema = require('./schemas/verifcation-schema')
+const dbAdd = require('./dbAdd')
 
 const channelsCache = {} // { 'guildID': channels }
 const rolesCache = {} // { 'guildID': roles }
@@ -167,7 +168,7 @@ const userCache = {} // { 'guildID-userID': joindate }
         let found = true
         if (result) {
         } else {
-          found = false
+          await dbAdd.user(guildID, userID, userRoles)
         }
         userCache[`${guildID}-${userID}`] = found
         return found;
@@ -178,7 +179,7 @@ const userCache = {} // { 'guildID-userID': joindate }
   }
 
 // Find the guild channels for the clock, error, log and spam from the Guild database
-  module.exports.timeAndMessages = async (guildID, userID) => {
+  module.exports.timeAndMessages = async (guildID, userID, userRoles) => {
     return await mongo().then(async (mongoose) => {
       try {
         console.log('Running dbGet timeAndMessages()')
@@ -186,15 +187,16 @@ const userCache = {} // { 'guildID-userID': joindate }
           guildID,
           userID,
         })
-        console.log(result)   
         const now = new Date().getTime()
         let join = ""
         if (result) {
           join = result.join;
           messages = result.messages;
-
-        } else {
-          console.log('No user Found');
+        } 
+        if (join === undefined) {
+          await dbAdd.user(guildID, userID, userRoles)   
+        join = now
+        messages = 0
         }
         const total = now - join
         return [total, messages];
