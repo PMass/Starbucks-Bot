@@ -24,7 +24,7 @@
 
 
 // when the client is ready, run this code
-client.on('ready', async () => {
+client.once('ready', async () => {
 	client.user.setPresence({ activity: { type: 'LISTENING', name: '1 Million Karens'}, status: 'online' }) //Set the bot to online and status
 	.catch(console.error);
 	console.log(client.user.id);
