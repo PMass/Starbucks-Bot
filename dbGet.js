@@ -7,7 +7,6 @@ const verificationSchema = require('./schemas/verifcation-schema')
 const channelsCache = {} // { 'guildID': channels }
 const rolesCache = {} // { 'guildID': roles }
 const rankCache = {} // { 'guildID-userID': rank }
-const joinCache = {} // { 'guildID-userID': joindate }
 const userCache = {} // { 'guildID-userID': joindate }
 
 // Find all users who are of a current status on the On Duty Database
@@ -180,10 +179,6 @@ const userCache = {} // { 'guildID-userID': joindate }
 
 // Find the guild channels for the clock, error, log and spam from the Guild database
   module.exports.timeAndMessages = async (guildID, userID) => {
-    const cachedValue = joinCache[`${guildID}-${userID}`]
-    if (cachedValue) {
-      return cachedValue
-    }
     return await mongo().then(async (mongoose) => {
       try {
         console.log('Running dbGet timeAndMessages()')
@@ -191,16 +186,20 @@ const userCache = {} // { 'guildID-userID': joindate }
           guildID,
           userID,
         })
+        console.log(result)   
+        const now = new Date().getTime()
         let join = ""
-        let messages = 0
         if (result) {
           join = result.join;
-          messages = result.messages;;
+          messages = result.messages;
+
         } else {
           console.log('No user Found');
         }
-        joinCache[`${guildID}-${userID}`] = join
-        return [join, messages];
+        const total = now - join
+        return [total, messages];
+      } catch(err){
+      console.error(err)
       } finally {
         mongoose.connection.close()
       }

@@ -8,9 +8,8 @@ const dbUpdate = require('./dbUpdate');
   module.exports.check = async (guild, userID, message) => {
     try {
       const guildID = guild.id
-      var [join, messages] = await dbGet.timeAndMessages(guildID, userID);
-      const now = new Date().getTime()
-      const total = now - join
+      let [total, messages] = await dbGet.timeAndMessages(guildID, userID);
+      console.log(total, messages)      
       const roles = await dbGet.roles(guildID)
       const userRoles = await dsGet.roles(guild, message.member)
       if(total >= 14545200000 && messages >= 340){
