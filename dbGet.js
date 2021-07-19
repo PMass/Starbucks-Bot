@@ -191,16 +191,16 @@ const userCache = {} // { 'guildID-userID': joindate }
           guildID,
           userID,
         })
-        let time = 0
+        let join = ""
         let messages = 0
         if (result) {
-          time = result.join;
+          join = result.join;
           messages = result.messages;;
         } else {
           console.log('No user Found');
         }
-        joinCache[`${guildID}-${userID}`] = time
-        return [time, messages];
+        joinCache[`${guildID}-${userID}`] = join
+        return [join, messages];
       } finally {
         mongoose.connection.close()
       }
