@@ -6,9 +6,7 @@ module.exports = async () => {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     connectTimeoutMS: 10000,
-    keepAlive: 1,
-    reconnectTries: 4,
-    reconnectInterval: 5000
+    keepAlive: 1
   })
   return mongoose
 }
