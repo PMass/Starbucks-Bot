@@ -5,12 +5,10 @@ const rolesCache = {} // { 'guildID-userID': roles }
 
 // Get information on a user based on their roles
   module.exports.roles = async (guild, mention, rolesAll) => {
-    console.log(rolesCache)
     const guildID = guild.id
     const userID = mention.id
     const cachedValue = rolesCache[`${guildID}-${userID}`]
     if (cachedValue) {
-      console.log('cachedValue')
       return cachedValue
     }
     try {
