@@ -26,8 +26,8 @@ module.exports = (client) => {}
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -53,8 +53,8 @@ module.exports = (client) => {}
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -91,8 +91,8 @@ module.exports = (client) => {}
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -125,8 +125,8 @@ module.exports = (client) => {}
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }

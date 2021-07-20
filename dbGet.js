@@ -21,8 +21,8 @@ const userCache = {} // { 'guildID-userID': joindate }
             message,
           })
         return result
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -47,8 +47,8 @@ const userCache = {} // { 'guildID-userID': joindate }
         }
         rolesCache[`${guildID}`] = roles
         return roles;
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -73,8 +73,8 @@ const userCache = {} // { 'guildID-userID': joindate }
         }
         channelsCache[`${guildID}`] = channels
         return channels;
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -99,8 +99,8 @@ const userCache = {} // { 'guildID-userID': joindate }
         }
         joinCache[`${guildID}-${userID}`] = time
         return time;
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -125,8 +125,8 @@ const userCache = {} // { 'guildID-userID': joindate }
         }
         rankCache[`${guildID}-${userID}`] = rank
         return rank;
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -146,8 +146,8 @@ const userCache = {} // { 'guildID-userID': joindate }
           console.log('No user Found');
         }
         return messages;
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -172,8 +172,8 @@ const userCache = {} // { 'guildID-userID': joindate }
         }
         userCache[`${guildID}-${userID}`] = found
         return found;
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -202,8 +202,6 @@ const userCache = {} // { 'guildID-userID': joindate }
         return [total, messages];
       } catch(err){
       console.error(err)
-      } finally {
-        mongoose.connection.close()
       }
     })
   }

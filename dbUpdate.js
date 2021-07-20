@@ -23,8 +23,8 @@ const verificationSchema = require('./schemas/verifcation-schema')
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -47,8 +47,8 @@ const verificationSchema = require('./schemas/verifcation-schema')
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }
@@ -71,8 +71,8 @@ const verificationSchema = require('./schemas/verifcation-schema')
             new: true,
           }
         )
-      } finally {
-        mongoose.connection.close()
+      } catch (err) {
+          console.log(err)
       }
     })
   }

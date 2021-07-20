@@ -45,7 +45,7 @@ const dsGet = require('./dsGet');
 				dsFunc.giveRole(guild, verify.userID, roles.rank1.id)
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, "verify", 43200)
 				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Partner hub`, "hub", 3600)
-	   		const userRoles = await dsGet.roles(guild, member)
+	   		const userRoles = await dsGet.roles(guild, member, roles)
 				dbAdd.user(guildID, verify.userID, userRoles)
 			} else { //If not approved or anything else
 				//Send message then nuke after 12 Hours
@@ -53,8 +53,8 @@ const dsGet = require('./dsGet');
 			}
 		   dsMsg.guildMessage(guild, `Read database and removed verification for ${tag}`, "log")
 			} catch (error) { // Error Catching
-				console.log(error)
 		    	console.log("ERROR! Unable to Read Information from Cells")
+				console.log(error)
 		    	dsMsg.guildMessage(guild, `Error Reading Cells Other Reason.`, "log")
 			}
 		}

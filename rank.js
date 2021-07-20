@@ -8,8 +8,8 @@ const dbUpdate = require('./dbUpdate');
   module.exports.check = async (guild, userID, message) => {
     try {
       const guildID = guild.id
-      const userRoles = await dsGet.roles(guild, message.member)  
-      const roles = await dbGet.roles(guildID)      
+      const roles = await dbGet.roles(guildID)
+      const userRoles = await dsGet.roles(guild, message.member, roles)  
       if(userRoles.includes(`1`) == true || userRoles.includes(`2`) || userRoles.includes(`3`) || userRoles.includes(`4`)){
         let [total, messages] = await dbGet.timeAndMessages(guildID, userID, userRoles);
         if(total >= 14545200000 && messages >= 340){
@@ -24,6 +24,7 @@ const dbUpdate = require('./dbUpdate');
           dsFunc.takeRole(guild, userID, roles.rank1.id)
         } else {
         }
+        await dsGet.updtRoles(guild, message.member, roles)
       } else {      
       dsFunc.giveRole(guild, userID, roles.rank1.id)
       }

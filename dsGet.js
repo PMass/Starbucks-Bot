@@ -1,22 +1,52 @@
 const Discord = require('discord.js');
 const dbGet = require('./dbGet')
 
+const rolesCache = {} // { 'guildID-userID': roles }
+
 // Get information on a user based on their roles
-  module.exports.roles = async (guild, mention) => {
-    console.log('Running dsGet roles()')
+  module.exports.roles = async (guild, mention, rolesAll) => {
+    console.log(rolesCache)
+    const guildID = guild.id
+    const userID = mention.id
+    const cachedValue = rolesCache[`${guildID}-${userID}`]
+    if (cachedValue) {
+      console.log('cachedValue')
+      return cachedValue
+    }
     try {
       const member = await guild.members.fetch(mention);
       const allRoles = member.roles.cache
       const roles = []
       allRoles.forEach(allRoles => roles.push(allRoles.id)); 
-      const rolesAll = await dbGet.roles(guild.id)
       const rolesValues = Object.values(rolesAll) // Pull the ID and name of each Group Role/certs/ranks
       var roleName = [] // Create a blank array for the groups/certs/rank of the user
       for (let i = 0; i < roles.length; i++) { //Go through each role and see if the ID matches any of the IDs of other arrays
         roleName.push(checkVariables(rolesValues, roles, i))
       }
       roleName = roleName.filter(x => x !== undefined); //Filter out each array for undefiend values
+      rolesCache[`${guildID}-${userID}`] = roleName
       return roleName
+    } catch (err){
+      console.error(err)
+    }
+  }
+
+// Get information on a user based on their roles
+  module.exports.updtRoles = async (guild, mention, rolesAll) => {
+    const guildID = guild.id
+    const userID = mention.id
+    try {
+      const member = await guild.members.fetch(mention);
+      const allRoles = member.roles.cache
+      const roles = []
+      allRoles.forEach(allRoles => roles.push(allRoles.id)); 
+      const rolesValues = Object.values(rolesAll) // Pull the ID and name of each Group Role/certs/ranks
+      var roleName = [] // Create a blank array for the groups/certs/rank of the user
+      for (let i = 0; i < roles.length; i++) { //Go through each role and see if the ID matches any of the IDs of other arrays
+        roleName.push(checkVariables(rolesValues, roles, i))
+      }
+      roleName = roleName.filter(x => x !== undefined); //Filter out each array for undefiend values
+      rolesCache[`${guildID}-${userID}`] = roleName
     } catch (err){
       console.error(err)
     }
@@ -24,7 +54,6 @@ const dbGet = require('./dbGet')
 
 // Get Roles for main groups (on duty, in queue, recruit, doc)
   module.exports.rolesGroup = async (guild) => {
-    console.log('Running dsGet rolesGroup()')
     try {
       const rolesGroups = {};
       const cache = guild.roles.cache
