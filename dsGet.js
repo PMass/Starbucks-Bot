@@ -26,6 +26,7 @@ const rolesCache = {} // { 'guildID-userID': roles }
       return roleName
     } catch (err){
       console.error(err)
+      console.error(guild, mention, rolesAll)
     }
   }
 
@@ -47,6 +48,7 @@ const rolesCache = {} // { 'guildID-userID': roles }
       rolesCache[`${guildID}-${userID}`] = roleName
     } catch (err){
       console.error(err)
+      console.error(guild, mention, rolesAll)
     }
   }
 
