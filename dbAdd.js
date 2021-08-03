@@ -66,8 +66,8 @@ module.exports = (client) => {}
         console.log('Running dbAdd user()')
         const join = new Date().getTime()
         const time = 0
-        const messages = 0
-        const coins = 0
+        const messages = 1
+        const coins = 1
         const items = {}
         const rank = "rank 1"
         await userInfoSchema.findOneAndUpdate(

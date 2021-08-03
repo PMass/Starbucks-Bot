@@ -188,7 +188,7 @@ const userCache = {} // { 'guildID-userID': joindate }
           userID,
         })
         const now = new Date().getTime()
-        let join = ""
+        let join = ''
         if (result) {
           join = result.join;
           messages = result.messages;
@@ -196,7 +196,7 @@ const userCache = {} // { 'guildID-userID': joindate }
         if (join === undefined) {
           await dbAdd.user(guildID, userID, userRoles)   
         join = now
-        messages = 0
+        var messages = 0
         }
         const total = now - join
         return [total, messages];

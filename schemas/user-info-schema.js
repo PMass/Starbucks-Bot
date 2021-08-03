@@ -24,12 +24,12 @@ const reqNum = {
 const userInfoSchema = mongoose.Schema({
   guildID: reqString,  
   userID: reqString,
-  roles: reqObject,
+  roles: Object,
   join: reqDate,
   time: reqString,
   messages: reqNum,
   coins: reqNum,
-  items: reqObject,
+  items: Object,
   rank: reqString,
 })
 

@@ -1,6 +1,9 @@
 const mongo = require('./mongo')
 const userInfoSchema = require('./schemas/user-info-schema')
 const storeSchema = require('./schemas/store-schema')
+const dsGet = require('./dsGet');
+const dbGet = require('./dbGet');
+const dbAdd = require('./dbAdd');
 
 const coinsCache = {} // { 'guildID-userID': coins }
 const costCache = {} // { 'guildID-name': cost }
@@ -9,29 +12,41 @@ const stockCache = {} // { 'guildID-name': stock }
 module.exports = (client) => {}
 
 // Adding coins to a user
-  module.exports.addCoins = async (guildID, userID, coins, messages) => {
+  module.exports.addCoins = async (guild, userID, coins, messages, message) => {
     return await mongo().then(async (mongoose) => {
       try {
-        const result = await userInfoSchema.findOneAndUpdate(
-          {
-            guildID,
-            userID,
-          },
-          {
-            guildID,
-            userID,
-            $inc: {
-              coins,
-              messages,
+        const guildID = guild.id
+        var result = await userInfoSchema.findOne({
+          guildID,
+          userID,
+        })
+        if (result) {
+          await userInfoSchema.findOneAndUpdate(
+            {
+              guildID,
+              userID,
             },
-          },
-          {
-            upsert: true,
-            new: true,
-          }
-        )
+            {
+              guildID,
+              userID,
+              $inc: {
+                coins,
+                messages,
+              },
+            })
+        } else {
+        console.log('Inserting a user')
+        const roles = await dbGet.roles(guildID)
+        const userRoles = await dsGet.roles(guild, message.member, roles)
+        await dbAdd.user(guildID, userID, userRoles)
+        result = {}
+        result.coins = 1
+      }
         coinsCache[`${guildID}-${userID}`] = result.coins
         return result.coins
+      } catch(err){
+        console.error(err)
+        console.error(userID, messages)
       } finally {
         mongoose.connection.close()
       }
