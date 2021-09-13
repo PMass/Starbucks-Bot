@@ -11,9 +11,7 @@ const dbUpdate = require('./dbUpdate');
       const roles = await dbGet.roles(guildID)
       const userRoles = await dsGet.roles(guild, message.member, roles)
       if(userRoles.includes(`1`) || userRoles.includes(`2`) || userRoles.includes(`3`) || userRoles.includes(`4`)){
-        let [total, messages] = await dbGet.timeAndMessages(guildID, userID, userRoles);
-        console.log(userRoles)
-        console.log(total, messages)       
+        let [total, messages] = await dbGet.timeAndMessages(guildID, userID, userRoles);   
         if(total >= 14545200000 && messages >= 340){
         } else if(total >= 14515200000 && messages >= 336 && !(userRoles.includes("4") == true)) {
           console.log('giving Role 4')
