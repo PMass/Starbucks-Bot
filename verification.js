@@ -36,7 +36,7 @@ const dsGet = require('./dsGet');
 			const guildID = guild.id
 			if(member === undefined){
 				const verify = await dbGet.verification(guildID, messageID)
-				let userID = verify.userID
+				var userID = verify.userID
 			} else {
 				userID = member.user.id;
 			}
@@ -61,7 +61,7 @@ const dsGet = require('./dsGet');
 		    	console.log("ERROR! Unable to Read Information from Cells")
 				console.log(error)
 		    	dsMsg.guildMessage(guild, `Error Reading Cells Other Reason.`, "log")
-				dsMsg.guildMessage(guild, `The verification for ${tag} had an error. Please manually update their discord info!`, "admin", 360000)
+				dsMsg.guildMessage(guild, `That verification had an error. Please manually update the discord info!`, "admin", 360000)
 			}
 		}
 
