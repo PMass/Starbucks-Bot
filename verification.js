@@ -32,21 +32,22 @@ const dsGet = require('./dsGet');
 // Send message based on channel and a guild
   	module.exports.readAndUpdate = async (messageID, status, guild, member) => {
   		console.log("running verification readAndUpdate()")	
+		  const userID = member.user.id;
 		try {
 			const guildID = guild.id
 			const verify = await dbGet.verification(guildID, messageID)
-			console.log(verify.userID)
-		   const tag = `<@${verify.userID}>` // Create a tag for them
+			console.log(userID)
+		   const tag = `<@${userID}>` // Create a tag for them
 			var time = formatted_date() //Date veriable 
 			await dbUpdate.verification(guildID, messageID, status, time)
 			if(status == 'Approved'){ //If approved
 				const roles = await dbGet.roles(guildID)
-				dsFunc.giveRole(guild, verify.userID, roles.verified.id)
-				dsFunc.giveRole(guild, verify.userID, roles.rank1.id)
+				dsFunc.giveRole(guild, userID, roles.verified.id)
+				dsFunc.giveRole(guild, userID, roles.rank1.id)
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, "verify", 43200)
 				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Partner hub`, "hub", 3600)
 	   		const userRoles = await dsGet.roles(guild, member, roles)
-				dbAdd.user(guildID, verify.userID, userRoles)
+				dbAdd.user(guildID, userID, userRoles)
 			} else { //If not approved or anything else
 				//Send message then nuke after 12 Hours
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been denied. Please review our qualifications before you resubmit!`, "verify", 43200)
@@ -56,6 +57,7 @@ const dsGet = require('./dsGet');
 		    	console.log("ERROR! Unable to Read Information from Cells")
 				console.log(error)
 		    	dsMsg.guildMessage(guild, `Error Reading Cells Other Reason.`, "log")
+				dsMsg.guildMessage(guild, `The verification for ${tag} had an error. Please manually update their discord info!`, "admin", 360000)
 			}
 		}
 
