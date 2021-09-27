@@ -32,12 +32,13 @@ const dsGet = require('./dsGet');
 // Send message based on channel and a guild
   	module.exports.readAndUpdate = async (messageID, status, guild, member) => {
   		console.log("running verification readAndUpdate()")
-		  console.log(member)
-		  var userID = member.user.id;
-		  console.log(userID)
 		try {
 			const guildID = guild.id
-			const verify = await dbGet.verification(guildID, messageID)
+			if(member === undefined){
+				var userID = await dbGet.verification(guildID, messageID)
+			} else {
+				userID = member.user.id;
+			}
 			console.log(userID)
 		   const tag = `<@${userID}>` // Create a tag for them
 			var time = formatted_date() //Date veriable 
