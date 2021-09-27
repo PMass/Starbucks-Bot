@@ -37,6 +37,7 @@ const dsGet = require('./dsGet');
 			if(member === undefined){
 				const verify = await dbGet.verification(guildID, messageID)
 				var userID = verify.userID
+				var member = await guild.members.fetch(userID);
 			} else {
 				userID = member.user.id;
 			}
@@ -50,7 +51,7 @@ const dsGet = require('./dsGet');
 				dsFunc.giveRole(guild, userID, roles.rank1.id)
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, "verify", 43200)
 				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Partner hub`, "hub", 3600)
-	   		const userRoles = await dsGet.roles(guild, member, roles)
+	   			const userRoles = await dsGet.roles(guild, member, roles)
 				dbAdd.user(guildID, userID, userRoles)
 			} else { //If not approved or anything else
 				//Send message then nuke after 12 Hours
