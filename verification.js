@@ -35,7 +35,8 @@ const dsGet = require('./dsGet');
 		try {
 			const guildID = guild.id
 			if(member === undefined){
-				var userID = await dbGet.verification(guildID, messageID)
+				const verify = await dbGet.verification(guildID, messageID)
+				let userID = verify.userID
 			} else {
 				userID = member.user.id;
 			}
