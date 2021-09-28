@@ -61,6 +61,7 @@ const dsGet = require('./dsGet');
 			} catch (error) { // Error Catching
 		    	console.log("ERROR! Unable to Read Information from Cells")
 				console.log(error)
+				console.log(messageID, status, member)
 		    	dsMsg.guildMessage(guild, `Error Reading Cells Other Reason.`, "log")
 				dsMsg.guildMessage(guild, `That verification had an error. Please manually update the discord info!`, "admin", 360000)
 			}
