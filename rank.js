@@ -17,11 +17,11 @@ const dbUpdate = require('./dbUpdate');
           console.log('giving Role 4')
           dsFunc.giveRole(guild, userID, roles.rank4.id)
           dsFunc.takeRole(guild, userID, roles.rank3.id)
-        } else if(total >= 4838400000 && messages >= 112 && !(userRoles.includes("3") == true)) {
+        } else if(total >= 4838400000 && messages >= 112 && !(userRoles.includes("3") == true) && !(userRoles.includes("4") == true)) {
           console.log('giving Role 3')
           dsFunc.giveRole(guild, userID, roles.rank3.id)
           dsFunc.takeRole(guild, userID, roles.rank2.id)
-        } else if(total >= 1209600000 && messages >= 56 && !(userRoles.includes("2") == true)) {
+        } else if(total >= 1209600000 && messages >= 56 && !(userRoles.includes("2") == true) && !(userRoles.includes("3") == true) && !(userRoles.includes("4") == true)) {
           console.log('giving Role 2')
           dsFunc.giveRole(guild, userID, roles.rank2.id)
           dsFunc.takeRole(guild, userID, roles.rank1.id)
