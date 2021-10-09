@@ -46,9 +46,14 @@ const dsGet = require('./dsGet');
 			var time = formatted_date() //Date veriable 
 			await dbUpdate.verification(guildID, messageID, status, time)
 			if(status == 'Approved'){ //If approved
-				const roles = await dbGet.roles(guildID)
+				const roles = await dbGet.roles(guildID)				
+      		const userole = await dsGet.roles(guild, member, roles)
+
 				dsFunc.giveRole(guild, userID, roles.verified.id)
+      		if(userole.includes(`1`) || userole.includes(`2`) || userole.includes(`3`) || userole.includes(`4`)){
+				} else {					
 				dsFunc.giveRole(guild, userID, roles.rank1.id)
+				}
 				dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, "verify", 43200)
 				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Partner hub`, "hub", 3600)
 	   			const userRoles = await dsGet.roles(guild, member, roles)
