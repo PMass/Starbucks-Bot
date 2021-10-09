@@ -45,7 +45,6 @@ module.exports.readAndUpdate = async (messageID, status, guild, member) => {
 			userID = member.user.id;
 		}
 		console.log(userID);
-		const tag = `<@${userID}>`; // Create a tag for them
 		const time = formatted_date(); // Date veriable
 		await dbUpdate.verification(guildID, messageID, status, time);
 		if(status == 'Approved') { // If approved
@@ -53,21 +52,21 @@ module.exports.readAndUpdate = async (messageID, status, guild, member) => {
 			const userole = await dsGet.roles(guild, member, roles);
 			dsFunc.giveRole(guild, userID, roles.verified.id);
 			if(userole.includes('1') || userole.includes('2') || userole.includes('3') || userole.includes('4')) {
-				dsMsg.guildMessage(guild, `Please welcome back ${tag} to the Partner hub`, 'hub', 3600);
+				dsMsg.guildMessage(guild, `Please welcome back ${member} to the Partner hub`, 'hub', 3600);
 			}
 			else {
 				dsFunc.giveRole(guild, userID, roles.rank1.id);
-				dsMsg.guildMessage(guild, `Please welcome ${tag} to the Partner hub`, 'hub', 3600);
+				dsMsg.guildMessage(guild, `Thank you ${member} for reverifying for 2022`, 'hub', 3600);
 			}
-			dsMsg.guildMessage(guild, `${tag} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, 'verify', 43200);
+			dsMsg.guildMessage(guild, `${member} You verification for partner has been approved! Please reivew our rules at <#425748759771873300>`, 'verify', 43200);
 			const userRoles = await dsGet.roles(guild, member, roles);
 			dbAdd.user(guildID, userID, userRoles);
 		}
 		else { // If not approved or anything else
 			// Send message then nuke after 12 Hours
-			dsMsg.guildMessage(guild, `${tag} You verification for partner has been denied. Please review our qualifications before you resubmit!`, 'verify', 43200);
+			dsMsg.guildMessage(guild, `${member} You verification for partner has been denied. Please review our qualifications before you resubmit!`, 'verify', 43200);
 		}
-		dsMsg.guildMessage(guild, `Read database and removed verification for ${tag}`, 'log');
+		dsMsg.guildMessage(guild, `Read database and removed verification for ${member}`, 'log');
 	}
 	catch (error) { // Error Catching
 		console.log('ERROR! Unable to Read Information from Cells');
