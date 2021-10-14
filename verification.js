@@ -31,7 +31,7 @@ module.exports.save = async (userID, verificationURL, guild) => {
 
 
 // Send message based on channel and a guild
-module.exports.readAndUpdate = async (messageID, status, guild, member) => {
+module.exports.readAndUpdate = async (messageID, status, guild, member, user) => {
 	console.log('running verification readAndUpdate()');
 	try {
 		const guildID = guild.id;
@@ -64,7 +64,7 @@ module.exports.readAndUpdate = async (messageID, status, guild, member) => {
 		}
 		else { // If not approved or anything else
 			// Send message then nuke after 12 Hours
-			dsMsg.guildMessage(guild, `${member} You verification for partner has been denied. Please review our qualifications before you resubmit!`, 'verify', 43200);
+			dsMsg.guildMessage(guild, `${member} You verification for partner has been denied by ${user}. Please review our qualifications before you resubmit!`, 'verify', 43200);
 		}
 		dsMsg.guildMessage(guild, `Read database and removed verification for ${member}`, 'log');
 	}

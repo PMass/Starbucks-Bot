@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 // require the discord.js module and configuration
 	const Discord = require('discord.js');
 	const mongo = require('./mongo')
@@ -91,7 +92,7 @@ client.on('messageReactionAdd', (messageReaction, user) => { //when we react
    		console.log(status) // Log if approved or denied
    		const mention = message.mentions.members.first()
 
-   		verification.readAndUpdate(message.id, status, guild, mention) //Run function to log this on google sheets
+   		verification.readAndUpdate(message.id, status, guild, mention, user) //Run function to log this on google sheets
    	}
 });
 
