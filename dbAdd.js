@@ -7,7 +7,7 @@ const verificationSchema = require('./schemas/verifcation-schema');
 
 // Add a server to the Guild Database
 module.exports.setup = async (guildID, roles, channels) => {
-	return await mongo().then(async (mongoose) => {
+	return await mongo().then(async () => {
 		try {
 			console.log('Running dbAdd setup()');
 			await guildInfoSchema.findOneAndUpdate(
@@ -33,7 +33,7 @@ module.exports.setup = async (guildID, roles, channels) => {
 
 // Add an item to the shop
 module.exports.items = async (guildID, name, cost, other) => {
-	return await mongo().then(async (mongoose) => {
+	return await mongo().then(async () => {
 		try {
 			console.log('Running dbAdd items()');
 			await storeSchema.findOneAndUpdate(
@@ -61,7 +61,7 @@ module.exports.items = async (guildID, name, cost, other) => {
 
 // Add an item to the shop
 module.exports.user = async (guildID, userID, roles) => {
-	return await mongo().then(async (mongoose) => {
+	return await mongo().then(async () => {
 		try {
 			console.log('Running dbAdd user()');
 			const join = new Date().getTime();
@@ -100,7 +100,7 @@ module.exports.user = async (guildID, userID, roles) => {
 
 // Add an item to the shop
 module.exports.verification = async (guildID, verify) => {
-	return await mongo().then(async (mongoose) => {
+	return await mongo().then(async () => {
 		try {
 			console.log('Running dbAdd verification()');
 			const message = verify.ID;

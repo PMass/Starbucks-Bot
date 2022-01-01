@@ -13,8 +13,8 @@ module.exports.roles = async (guild, mention, rolesAll) => {
 		const allRoles = member.roles.cache;
 		const roles = [];
 		allRoles.forEach(allRoles => roles.push(allRoles.id));
-		const rolesValues = Object.values(rolesAll); // Pull the ID and name of each Group Role/certs/ranks
-		let roleName = []; // Create a blank array for the groups/certs/rank of the user
+		const rolesValues = Object.values(rolesAll); // Pull the ID and name of each Role
+		let roleName = []; // Create a blank array for the roles of the user
 		for (let i = 0; i < roles.length; i++) { // Go through each role and see if the ID matches any of the IDs of other arrays
 			roleName.push(checkVariables(rolesValues, roles, i));
 		}
