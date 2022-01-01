@@ -73,7 +73,7 @@ client.on('message', message => {
 client.on('messageReactionAdd', (messageReaction, user) => { // when we react
 	const message = messageReaction.message, emoji = messageReaction.emoji; // Log this shit
 	const guild = message.guild; // get the guild object
- 	if (user.id != botID && message.channel.name == 'partner-verification') { // If not the bot
+ 	if (user.id != botID && message.channel.name == 'verification-queue') { // If not the bot
 		message.delete({ timeout: 5 }); // Remove the message we reacting to
 		let status = '';
     	if (emoji.name == '🟢') { // Green Circle
